@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { white } from '../utils/colors';
 import TextBtn from './TextBtn';
-import { createDeck } from '../utils/api';
+import { saveDeckTitle } from '../utils/api';
 import { addDeck } from '../actions';
 import { connect } from 'react-redux';
 
@@ -14,7 +14,7 @@ class NewDeck extends Component {
   submitDeck = () => {
     const { title } = this.state;
     const { dispatch } = this.props;
-    createDeck(title).then(() => {
+    saveDeckTitle(title).then(() => {
       //Update Redux
       dispatch(
         addDeck({

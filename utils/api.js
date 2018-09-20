@@ -15,7 +15,7 @@ export function getDeck(id) {
   });
 }
 
-export function createDeck(title) {
+export function saveDeckTitle(title) {
   return AsyncStorage.mergeItem(
     DECK_STORAGE_KEY,
     JSON.stringify({

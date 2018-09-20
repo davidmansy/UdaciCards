@@ -20,49 +20,38 @@ class Decks extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     getDecks()
-      .then(decks => dispatch(receiveDecks(decks)))
+      .then(decks => {
+        dispatch(receiveDecks(decks));
+      })
       .then(() => this.setState(() => ({ ready: true })));
   }
 
   render() {
     const { ready } = this.state;
     const { decks } = this.props;
+
     if (ready === false) {
       return <AppLoading />;
     }
 
     return (
       <View style={{ flex: 1 }}>
-        {/* <FlatList
-          data={Object.keys(decks)}
-          renderItem={({ key }) => (
-            <TouchableOpacity>
-              onPress=
-              {() => this.props.navigation.navigate('DeckDetail', { id: key })}
-              key=
-              {key}>
+        <FlatList
+          data={Object.values(decks)}
+          keyExtractor={item => item.title}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('DeckDetail', { id: item.title })
+              }
+            >
               <View style={styles.deck}>
-                <Text>{decks}</Text>
-                <Text>{decks[key]}</Text>
-                <Text># of cards {decks[key]}</Text>
+                <Text>{item.title}</Text>
+                <Text># of cards {item.questions.length}</Text>
               </View>
             </TouchableOpacity>
           )}
-        /> */}
-
-        {Object.keys(decks).map(key => (
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('DeckDetail', { id: key })
-            }
-            key={key}
-          >
-            <View style={styles.deck}>
-              <Text>{decks[key].title}</Text>
-              <Text># of cards {decks[key].questions.length}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        />
       </View>
     );
   }
