@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { getDeck } from '../utils/api';
 
 export default class DeckDetail extends Component {
   static navigationOptions = ({ navigation }) => {
     const { id } = navigation.state.params;
-
-    //Find deck record from Async Storage and use the title instead of id
-
     return {
       title: id
     };
   };
 
+  state = {
+    deck: null
+  };
+
+  componentDidMount() {
+    const { id } = this.props.navigation.state.params;
+
+    getDeck(id).then(deck => {
+      this.setState(() => ({ deck }));
+    });
+  }
+
   render() {
+    const { deck } = this.state;
+
+    if (deck === null) {
+      return null;
+    }
     return (
       <View style={styles.container}>
-        <Text>Deck Detail View</Text>
+        <Text>Name: {deck.title}</Text>
+        <Text># of questions: {deck.questions.length}</Text>
       </View>
     );
   }

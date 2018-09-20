@@ -1,18 +1,68 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import TextBtn from './TextBtn';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList
+} from 'react-native';
+import { getDecks } from '../utils/api';
+import { purple } from '../utils/colors';
+import { AppLoading } from 'expo';
+import { connect } from 'react-redux';
+import { receiveDecks } from '../actions';
 
-export default class Decks extends Component {
+class Decks extends Component {
+  state = {
+    ready: false
+  };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    getDecks()
+      .then(decks => dispatch(receiveDecks(decks)))
+      .then(() => this.setState(() => ({ ready: true })));
+  }
+
   render() {
+    const { ready } = this.state;
+    const { decks } = this.props;
+    if (ready === false) {
+      return <AppLoading />;
+    }
+
     return (
       <View style={{ flex: 1 }}>
-        <Text>List of decks view</Text>
-        <TextBtn
-          onPress={() =>
-            this.props.navigation.navigate('DeckDetail', { id: 'Fake Title' })
-          }
-          text={'Deck Detail'}
-        />
+        {/* <FlatList
+          data={Object.keys(decks)}
+          renderItem={({ key }) => (
+            <TouchableOpacity>
+              onPress=
+              {() => this.props.navigation.navigate('DeckDetail', { id: key })}
+              key=
+              {key}>
+              <View style={styles.deck}>
+                <Text>{decks}</Text>
+                <Text>{decks[key]}</Text>
+                <Text># of cards {decks[key]}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        /> */}
+
+        {Object.keys(decks).map(key => (
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate('DeckDetail', { id: key })
+            }
+            key={key}
+          >
+            <View style={styles.deck}>
+              <Text>{decks[key].title}</Text>
+              <Text># of cards {decks[key].questions.length}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
     );
   }
@@ -23,5 +73,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  deck: {
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: purple
   }
 });
+
+function mapStateToProps(decks) {
+  return {
+    decks
+  };
+}
+
+export default connect(mapStateToProps)(Decks);

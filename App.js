@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, Platform, StatusBar } from 'react-native';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './reducers';
 import {
   createBottomTabNavigator,
   createStackNavigator
@@ -85,10 +88,12 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <UdaciStatusBar backgroundColor={orange} barStyle="light-content" />
-        <MainNavigator />
-      </View>
+      <Provider store={createStore(reducer)}>
+        <View style={{ flex: 1 }}>
+          <UdaciStatusBar backgroundColor={orange} barStyle="light-content" />
+          <MainNavigator />
+        </View>
+      </Provider>
     );
   }
 }
