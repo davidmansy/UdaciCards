@@ -47,7 +47,7 @@ class Decks extends Component {
             >
               <View style={styles.deck}>
                 <Text>{item.title}</Text>
-                <Text># of cards {item.questions.length}</Text>
+                <Text># of cards: {item.questions.length}</Text>
               </View>
             </TouchableOpacity>
           )}

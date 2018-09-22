@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import UCardTextInput from './UCardTextInput';
 import { white } from '../utils/colors';
-import TextBtn from './TextBtn';
 import { saveDeckTitle } from '../utils/api';
 import { addDeck } from '../actions';
 import { connect } from 'react-redux';
+import UCardBtn from './UCardBtn';
 
 class NewDeck extends Component {
   state = {
@@ -30,10 +31,9 @@ class NewDeck extends Component {
   render() {
     const { title } = this.state;
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.title}>What is the title of your new deck?</Text>
-        <TextInput
-          style={styles.input}
+        <UCardTextInput
           value={title}
           onChangeText={title => {
             this.setState(() => ({ title }));
@@ -41,9 +41,13 @@ class NewDeck extends Component {
           placeholder="Deck Title"
         />
         <View style={{ marginTop: 20 }}>
-          <TextBtn onPress={this.submitDeck} text={'Submit'} />
+          <UCardBtn
+            onPress={this.submitDeck}
+            text={'Submit'}
+            disabled={title === ''}
+          />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -58,11 +62,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 50,
     textAlign: 'center'
-  },
-  input: {
-    fontSize: 30,
-    marginTop: 10,
-    marginBottom: 10
   }
 });
 

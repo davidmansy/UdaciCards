@@ -10,6 +10,7 @@ import {
 import Decks from './components/Decks';
 import NewDeck from './components/NewDeck';
 import DeckDetail from './components/DeckDetail';
+import AddCard from './components/AddCard';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { white, orange, gray } from './utils/colors';
 import { Constants } from 'expo';
@@ -73,6 +74,16 @@ const MainNavigator = createStackNavigator({
   DeckDetail: {
     screen: DeckDetail,
     navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: orange
+      }
+    }
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      title: 'Add Card',
       headerTintColor: white,
       headerStyle: {
         backgroundColor: orange

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { getDeck } from '../utils/api';
+import { connect } from 'react-redux';
+import UCardBtn from './UCardBtn';
 
-export default class DeckDetail extends Component {
+class DeckDetail extends Component {
   static navigationOptions = ({ navigation }) => {
     const { id } = navigation.state.params;
     return {
@@ -10,20 +11,8 @@ export default class DeckDetail extends Component {
     };
   };
 
-  state = {
-    deck: null
-  };
-
-  componentDidMount() {
-    const { id } = this.props.navigation.state.params;
-
-    getDeck(id).then(deck => {
-      this.setState(() => ({ deck }));
-    });
-  }
-
   render() {
-    const { deck } = this.state;
+    const { deck } = this.props;
 
     if (deck === null) {
       return null;
@@ -31,7 +20,13 @@ export default class DeckDetail extends Component {
     return (
       <View style={styles.container}>
         <Text>Name: {deck.title}</Text>
-        <Text># of questions: {deck.questions.length}</Text>
+        <Text># of cards: {deck.questions.length}</Text>
+        <UCardBtn
+          text="Add Card"
+          onPress={() => {
+            this.props.navigation.navigate('AddCard', { id: deck.title });
+          }}
+        />
       </View>
     );
   }
@@ -45,3 +40,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+function mapStateToProps(state, { navigation }) {
+  return {
+    deck: state[navigation.state.params.id]
+  };
+}
+
+export default connect(mapStateToProps)(DeckDetail);

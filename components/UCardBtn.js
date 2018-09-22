@@ -2,11 +2,15 @@ import React from 'react';
 import { TouchableOpacity, Platform, Text, StyleSheet } from 'react-native';
 import { white, orange } from '../utils/colors';
 
-export default function TextBtn({ text, onPress }) {
+export default function UCardBtn({ text, onPress, disabled }) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={Platform.OS === 'ios' ? styles.iosTextBtn : styles.androidTextBtn}
+      style={[
+        Platform.OS === 'ios' ? styles.iosTextBtn : styles.androidTextBtn,
+        disabled ? styles.disabled : ''
+      ]}
+      disabled={disabled}
     >
       <Text style={styles.textBtnText}>{text}</Text>
     </TouchableOpacity>
@@ -20,7 +24,8 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 45,
     marginLeft: 40,
-    marginRight: 40
+    marginRight: 40,
+    width: 300
   },
   androidTextBtn: {
     backgroundColor: orange,
@@ -37,5 +42,8 @@ const styles = StyleSheet.create({
     color: white,
     fontSize: 22,
     textAlign: 'center'
+  },
+  disabled: {
+    opacity: 0.2
   }
 });
