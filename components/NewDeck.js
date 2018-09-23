@@ -13,7 +13,8 @@ class NewDeck extends Component {
   };
 
   submitDeck = () => {
-    const { title } = this.state;
+    let { title } = this.state;
+    title = title.trim();
     const { dispatch } = this.props;
     saveDeckTitle(title).then(() => {
       //Update Redux
@@ -34,7 +35,7 @@ class NewDeck extends Component {
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.title}>What is the title of your new deck?</Text>
         <UCardTextInput
-          value={title}
+          text={title}
           onChangeText={title => {
             this.setState(() => ({ title }));
           }}

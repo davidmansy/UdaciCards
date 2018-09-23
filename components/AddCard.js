@@ -1,14 +1,36 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import UCardTextInput from './UCardTextInput';
 import { white } from '../utils/colors';
 import UCardBtn from './UCardBtn';
+import { addCardToDeck } from '../utils/api';
+import { addCard } from '../actions';
+import { NavigationActions } from 'react-navigation';
 
 class AddCard extends Component {
   state = {
     question: '',
     answer: ''
+  };
+
+  addCard = () => {
+    const { question, answer } = this.state;
+    const { dispatch, navigation } = this.props;
+    const title = navigation.state.params.id;
+
+    //Update local storage
+    addCardToDeck(title, {
+      question,
+      answer
+    }).then(() => {
+      //Update redux
+      dispatch(addCard(title, { question, answer }));
+      //Reset state
+      this.setState(() => ({ question: '', answer: '' }));
+      //Navigate back
+      this.props.navigation.navigate('DeckDetail', { id: title });
+    });
   };
 
   render() {
@@ -18,14 +40,14 @@ class AddCard extends Component {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <UCardTextInput
-          value={question}
+          text={question}
           onChangeText={question => {
             this.setState(() => ({ question }));
           }}
           placeholder="Question"
         />
         <UCardTextInput
-          value={answer}
+          text={answer}
           onChangeText={answer => {
             this.setState(() => ({ answer }));
           }}
@@ -50,10 +72,4 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state, { navigation }) {
-  return {
-    deck: state[navigation.state.params.id]
-  };
-}
-
-export default connect(mapStateToProps)(AddCard);
+export default connect()(AddCard);

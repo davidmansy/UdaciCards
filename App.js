@@ -14,6 +14,7 @@ import AddCard from './components/AddCard';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { white, orange, gray } from './utils/colors';
 import { Constants } from 'expo';
+import middelware from './middleware';
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
@@ -99,7 +100,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Provider store={createStore(reducer)}>
+      <Provider store={createStore(reducer, middelware)}>
         <View style={{ flex: 1 }}>
           <UdaciStatusBar backgroundColor={orange} barStyle="light-content" />
           <MainNavigator />
