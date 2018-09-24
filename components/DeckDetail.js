@@ -27,6 +27,13 @@ class DeckDetail extends Component {
             this.props.navigation.navigate('AddCard', { id: deck.title });
           }}
         />
+        <UCardBtn
+          style={{ marginTop: 10 }}
+          text="Start Quiz"
+          onPress={() => {
+            this.props.navigation.navigate('Quiz', { id: deck.title });
+          }}
+        />
       </View>
     );
   }

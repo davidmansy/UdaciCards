@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView, Switch } from 'react-native';
 import { connect } from 'react-redux';
 import UCardTextInput from './UCardTextInput';
 import { white } from '../utils/colors';
@@ -11,31 +11,43 @@ import { NavigationActions } from 'react-navigation';
 class AddCard extends Component {
   state = {
     question: '',
-    answer: ''
+    answer: '',
+    correct: true
   };
 
   addCard = () => {
-    const { question, answer } = this.state;
+    const { question, answer, correct } = this.state;
     const { dispatch, navigation } = this.props;
     const title = navigation.state.params.id;
 
     //Update local storage
     addCardToDeck(title, {
       question,
-      answer
+      answer,
+      correct
     }).then(() => {
       //Update redux
-      dispatch(addCard(title, { question, answer }));
+      dispatch(addCard(title, { question, answer, correct }));
       //Reset state
-      this.setState(() => ({ question: '', answer: '' }));
+      this.setState(() => ({ question: '', answer: '', correct: true }));
       //Navigate back
       this.props.navigation.navigate('DeckDetail', { id: title });
     });
   };
 
-  render() {
-    const { deck } = this.props;
+  handleToggleSwitch = () => {
+    this.setState(currentState => ({
+      correct: !currentState.correct
+    }));
+  };
+
+  disableControl = () => {
     const { question, answer } = this.state;
+    return question === '' || answer === '';
+  };
+
+  render() {
+    const { question, answer, correct } = this.state;
 
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -53,10 +65,16 @@ class AddCard extends Component {
           }}
           placeholder="Answer"
         />
+        <Switch
+          value={correct}
+          onValueChange={this.handleToggleSwitch}
+          disabled={this.disableControl()}
+        />
         <UCardBtn
+          style={{ marginTop: 20 }}
           onPress={this.addCard}
           text={'Submit'}
-          disabled={question === '' || answer === ''}
+          disabled={this.disableControl()}
         />
       </KeyboardAvoidingView>
     );

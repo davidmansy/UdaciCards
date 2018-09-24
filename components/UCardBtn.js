@@ -2,13 +2,14 @@ import React from 'react';
 import { TouchableOpacity, Platform, Text, StyleSheet } from 'react-native';
 import { white, orange } from '../utils/colors';
 
-export default function UCardBtn({ text, onPress, disabled }) {
+export default function UCardBtn({ text, onPress, disabled, style }) {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[
         Platform.OS === 'ios' ? styles.iosTextBtn : styles.androidTextBtn,
-        disabled ? styles.disabled : ''
+        disabled ? styles.disabled : '',
+        style
       ]}
       disabled={disabled}
     >
