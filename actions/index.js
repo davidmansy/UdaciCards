@@ -1,6 +1,7 @@
 export const RECEIVE_DECKS = 'RECEIVE_DECKS';
 export const ADD_DECK = 'ADD_DECK';
 export const ADD_CARD = 'ADD_CARD';
+export const UPDATE_DECK = 'UPDATE_DECK';
 
 export function receiveDecks(decks) {
   return {
@@ -21,5 +22,13 @@ export function addCard(title, card) {
     type: ADD_CARD,
     title,
     card
+  };
+}
+
+export function updateDeck(title, user) {
+  return {
+    type: UPDATE_DECK,
+    title,
+    user
   };
 }

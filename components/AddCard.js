@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, KeyboardAvoidingView, Switch } from 'react-native';
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  Switch,
+  Text,
+  View
+} from 'react-native';
 import { connect } from 'react-redux';
 import UCardTextInput from './UCardTextInput';
 import { white } from '../utils/colors';
 import UCardBtn from './UCardBtn';
 import { addCardToDeck } from '../utils/api';
 import { addCard } from '../actions';
-import { NavigationActions } from 'react-navigation';
 
 class AddCard extends Component {
   state = {
@@ -51,25 +56,30 @@ class AddCard extends Component {
 
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <UCardTextInput
-          text={question}
-          onChangeText={question => {
-            this.setState(() => ({ question }));
-          }}
-          placeholder="Question"
-        />
-        <UCardTextInput
-          text={answer}
-          onChangeText={answer => {
-            this.setState(() => ({ answer }));
-          }}
-          placeholder="Answer"
-        />
-        <Switch
-          value={correct}
-          onValueChange={this.handleToggleSwitch}
-          disabled={this.disableControl()}
-        />
+        <View>
+          <UCardTextInput
+            text={question}
+            onChangeText={question => {
+              this.setState(() => ({ question }));
+            }}
+            placeholder="Question"
+          />
+          <UCardTextInput
+            text={answer}
+            onChangeText={answer => {
+              this.setState(() => ({ answer }));
+            }}
+            placeholder="Answer"
+          />
+        </View>
+        <View style={styles.correctRow}>
+          <Text style={{ fontSize: 22, marginRight: 10 }}>Correct?</Text>
+          <Switch
+            value={correct}
+            onValueChange={this.handleToggleSwitch}
+            disabled={this.disableControl()}
+          />
+        </View>
         <UCardBtn
           style={{ marginTop: 20 }}
           onPress={this.addCard}
@@ -87,6 +97,13 @@ const styles = StyleSheet.create({
     backgroundColor: white,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  correctRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginBottom: 40
   }
 });
 

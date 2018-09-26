@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import UCardBtn from './UCardBtn';
+import { updateDeckUser } from '../utils/api';
+import { updateDeck } from '../actions';
+import { NavigationActions } from 'react-navigation';
 
 class Quiz extends Component {
   state = {
@@ -14,7 +17,50 @@ class Quiz extends Component {
     }));
   };
 
-  submitUserAnswer = answer => {};
+  submitUserAnswer = userCorrect => {
+    const { deck, dispatch } = this.props;
+    const user = {
+      ...deck.user
+    };
+    const currentQuestion = deck.questions[deck.user.nextQuestionIndex];
+
+    if (userCorrect === currentQuestion.correct) {
+      user.score++;
+    }
+    user.nextQuestionIndex++;
+    //Update API
+    updateDeckUser(deck.title, user).then(() => {
+      //Update redux
+      dispatch(updateDeck(deck.title, user));
+      //Reset state?
+      this.setState(() => ({ questionShown: true }));
+      //Make the view to be refreshed?
+    });
+  };
+
+  reset = () => {
+    const { deck, dispatch } = this.props;
+    const title = deck.title;
+    const user = {
+      score: 0,
+      nextQuestionIndex: 0
+    };
+    //Update API
+    updateDeckUser(title, user).then(() => {
+      //Update redux
+      dispatch(updateDeck(title, user));
+      //Reset state
+      this.setState(() => ({ questionShown: true }));
+    });
+  };
+
+  backToDeck = () => {
+    this.props.navigation.dispatch(
+      NavigationActions.back({
+        key: null
+      })
+    );
+  };
 
   render() {
     const { deck } = this.props;
@@ -23,6 +69,15 @@ class Quiz extends Component {
     const counter = deck.user.nextQuestionIndex + 1;
     const total = deck.questions.length;
 
+    if (counter > deck.questions.length) {
+      return (
+        <View style={styles.container}>
+          <Text>Here is your score: {`${deck.user.score}/${total}`}</Text>
+          <UCardBtn text="Reset Quiz" onPress={this.reset} />
+          <UCardBtn text="Back to Deck" onPress={this.backToDeck} />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.counters}>

@@ -45,3 +45,17 @@ export function addCardToDeck(title, card) {
     );
   });
 }
+
+export function updateDeckUser(title, user) {
+  return getDeck(title).then(deck => {
+    return AsyncStorage.mergeItem(
+      DECK_STORAGE_KEY,
+      JSON.stringify({
+        [title]: {
+          ...deck,
+          user: { ...user }
+        }
+      })
+    );
+  });
+}

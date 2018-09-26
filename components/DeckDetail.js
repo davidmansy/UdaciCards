@@ -33,6 +33,7 @@ class DeckDetail extends Component {
           onPress={() => {
             this.props.navigation.navigate('Quiz', { id: deck.title });
           }}
+          disabled={deck.questions.length === 0}
         />
       </View>
     );
