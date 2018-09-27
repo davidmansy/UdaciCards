@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import UCardBtn from './UCardBtn';
-import { updateDeckUser } from '../utils/api';
-import { updateDeck } from '../actions';
-import { NavigationActions } from 'react-navigation';
-import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
+import { updateDeckUser } from '../../utils/api';
+import { updateDeck } from '../../actions';
+import UCardBtn from '../UCardBtn';
+import {
+  clearLocalNotification,
+  setLocalNotification
+} from '../../utils/helpers';
 
-class Quiz extends Component {
+class Step extends Component {
   state = {
     questionShown: true
   };
@@ -29,61 +31,28 @@ class Quiz extends Component {
       user.score++;
     }
     user.nextQuestionIndex++;
-    //Update API
+
+    //Reset state
+    this.setState(() => ({ questionShown: true }));
+
+    //Update LocalStorage / Redux / Clear notifs
     updateDeckUser(deck.title, user).then(() => {
-      //Update redux
       dispatch(updateDeck(deck.title, user));
-      //Reset state?
-      this.setState(() => ({ questionShown: true }));
-      //Clear local notification if quiz done
       if (user.nextQuestionIndex >= deck.questions.length) {
         clearLocalNotification().then(setLocalNotification);
       }
     });
   };
 
-  reset = () => {
-    const { deck, dispatch } = this.props;
-    const title = deck.title;
-    const user = {
-      score: 0,
-      nextQuestionIndex: 0
-    };
-    //Update API
-    updateDeckUser(title, user).then(() => {
-      //Update redux
-      dispatch(updateDeck(title, user));
-      //Reset state
-      this.setState(() => ({ questionShown: true }));
-    });
-  };
-
-  backToDeck = () => {
-    this.props.navigation.dispatch(
-      NavigationActions.back({
-        key: null
-      })
-    );
-  };
-
   render() {
-    const { deck } = this.props;
     const { questionShown } = this.state;
+    const { deck } = this.props;
     const card = deck.questions[deck.user.nextQuestionIndex];
     const counter = deck.user.nextQuestionIndex + 1;
     const total = deck.questions.length;
 
-    if (counter > deck.questions.length) {
-      return (
-        <View style={styles.container}>
-          <Text>Here is your score: {`${deck.user.score}/${total}`}</Text>
-          <UCardBtn text="Reset Quiz" onPress={this.reset} />
-          <UCardBtn text="Back to Deck" onPress={this.backToDeck} />
-        </View>
-      );
-    }
     return (
-      <View style={styles.container}>
+      <Fragment>
         <View style={styles.counters}>
           <Text style={{ fontSize: 20 }}>{`${counter} / ${total}`}</Text>
         </View>
@@ -113,18 +82,12 @@ class Quiz extends Component {
             }}
           />
         </View>
-      </View>
+      </Fragment>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
   counters: {
     alignSelf: 'flex-start',
     marginLeft: 10,
@@ -143,10 +106,10 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state, { navigation }) {
+function mapStateToProps(state, { id }) {
   return {
-    deck: state[navigation.state.params.id]
+    deck: state[id]
   };
 }
 
-export default connect(mapStateToProps)(Quiz);
+export default connect(mapStateToProps)(Step);

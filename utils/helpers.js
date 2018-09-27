@@ -4,7 +4,7 @@ import { Notifications, Permissions } from 'expo';
 const NOTIFICATION_KEY = 'UdaciCards:notification';
 
 export function clearLocalNotification() {
-  AsyncStorage.removeItem(NOTIFICATION_KEY).then(
+  return AsyncStorage.removeItem(NOTIFICATION_KEY).then(
     Notifications.cancelAllScheduledNotificationsAsync
   );
 }
