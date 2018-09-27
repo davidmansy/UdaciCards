@@ -16,6 +16,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { white, orange, gray } from './utils/colors';
 import { Constants } from 'expo';
 import middelware from './middleware';
+import { setLocalNotification } from './utils/helpers';
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
@@ -105,9 +106,9 @@ const MainNavigator = createStackNavigator({
 });
 
 export default class App extends React.Component {
-  // componentDidMount() {
-  //   //TODO: Add setup notification
-  // }
+  componentDidMount() {
+    setLocalNotification();
+  }
 
   render() {
     return (

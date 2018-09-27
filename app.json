@@ -1,5 +1,20 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "sdkVersion": "27.0.0",
+    "orientation": "portrait",
+    "name": "UdaciCards",
+    "description": "The best quiz builder ever",
+    "slug": "udaccards",
+    "version": "1.0",
+    "icon": "https://tylermcginnis.com/udacifitness-512.png",
+    "notification": {
+      "icon": "https://tylermcginnis.com/udacifitness-45.png"
+    },
+    "ios": {
+      "bundleIdentifier": "org.udacicards.exp"
+    },
+    "android": {
+      "package": "org.udacicards.exp"
+    }
   }
 }

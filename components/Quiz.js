@@ -5,6 +5,7 @@ import UCardBtn from './UCardBtn';
 import { updateDeckUser } from '../utils/api';
 import { updateDeck } from '../actions';
 import { NavigationActions } from 'react-navigation';
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
 
 class Quiz extends Component {
   state = {
@@ -34,7 +35,10 @@ class Quiz extends Component {
       dispatch(updateDeck(deck.title, user));
       //Reset state?
       this.setState(() => ({ questionShown: true }));
-      //Make the view to be refreshed?
+      //Clear local notification if quiz done
+      if (user.nextQuestionIndex >= deck.questions.length) {
+        clearLocalNotification().then(setLocalNotification);
+      }
     });
   };
 
