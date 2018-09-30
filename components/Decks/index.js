@@ -30,6 +30,19 @@ class Decks extends Component {
     this.props.navigation.navigate('NewDeck');
   };
 
+  deckAlphabetically = (deckA, deckB) => {
+    const titleA = deckA.title.toUpperCase();
+    const titleB = deckB.title.toUpperCase(); // ignore upper and lowercase
+    if (titleA < titleB) {
+      return -1;
+    }
+    if (titleA > titleB) {
+      return 1;
+    }
+
+    return 0;
+  };
+
   render() {
     const { ready } = this.state;
     const { decks } = this.props;
@@ -46,9 +59,8 @@ class Decks extends Component {
 
     return (
       <View style={styles.container}>
-        {/* TODO: Sort list based on creation date */}
         <FlatList
-          data={Object.values(decks)}
+          data={Object.values(decks).sort(this.deckAlphabetically)}
           keyExtractor={item => item.title}
           renderItem={({ item }) => (
             <DeckItem goToDeckDetail={this.goToDeckDetail} item={item} />

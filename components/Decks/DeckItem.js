@@ -21,7 +21,9 @@ export default function DeckItem({ goToDeckDetail, item }) {
           <Text style={styles.mainText}>{item.title}</Text>
           <Text style={styles.subText}>
             {item.questions.length
-              ? `${item.questions.length} cards available to play a quiz`
+              ? `${item.questions.length} card${
+                  item.questions.length > 1 ? 's' : ''
+                } available to play a quiz`
               : `Please add a card to start a quiz`}
           </Text>
         </View>

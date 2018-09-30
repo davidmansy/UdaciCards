@@ -12,7 +12,7 @@ import NewDeck from './components/NewDeck';
 import DeckDetail from './components/DeckDetail';
 import AddCard from './components/AddCard';
 import Quiz from './components/Quiz';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { white, orange, gray } from './utils/colors';
 import { Constants } from 'expo';
 import middelware from './middleware';
@@ -87,7 +87,8 @@ const MainNavigator = createStackNavigator({
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
-        backgroundColor: orange
+        backgroundColor: orange,
+        paddingBottom: 15
       }
     }
   },
@@ -97,7 +98,8 @@ const MainNavigator = createStackNavigator({
       title: 'Add Card',
       headerTintColor: white,
       headerStyle: {
-        backgroundColor: orange
+        backgroundColor: orange,
+        paddingBottom: 15
       }
     }
   },
@@ -107,7 +109,8 @@ const MainNavigator = createStackNavigator({
       title: 'Quiz',
       headerTintColor: white,
       headerStyle: {
-        backgroundColor: orange
+        backgroundColor: orange,
+        paddingBottom: 15
       }
     }
   }

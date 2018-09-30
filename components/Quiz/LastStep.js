@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { Text } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { updateDeckUser } from '../../utils/api';
 import { updateDeck } from '../../actions';
 import UCardBtn from '../UCardBtn';
+import { orange, darkBrown, lightBrown, red } from '../../utils/colors';
 
 class LastStep extends Component {
   reset = () => {
@@ -25,11 +26,28 @@ class LastStep extends Component {
 
     return (
       <Fragment>
-        <Text>
-          Here is your score: {`${deck.user.score}/${deck.questions.length}`}
-        </Text>
-        <UCardBtn text="Reset Quiz" onPress={this.reset} />
-        <UCardBtn text="Back to Deck" onPress={backToDeck} />
+        <View style={styles.description}>
+          <Text style={{ fontSize: 44, color: darkBrown, marginBottom: 20 }}>
+            Quiz Completed
+          </Text>
+          <Text style={{ fontSize: 22, color: lightBrown, marginBottom: 20 }}>
+            {`Thanks for playing this quiz, you gave ${
+              deck.user.score
+            } correct answer${deck.user.score > 1 ? 's' : ''} out of ${
+              deck.questions.length
+            } question${
+              deck.questions.length > 1 ? 's' : ''
+            }! Play every day to improve your knowledge!`}
+          </Text>
+        </View>
+        <View>
+          <UCardBtn text="Back to Deck" onPress={backToDeck} />
+          <UCardBtn
+            text="Reset Quiz"
+            onPress={this.reset}
+            style={{ backgroundColor: red, marginTop: 20 }}
+          />
+        </View>
       </Fragment>
     );
   }
@@ -40,5 +58,15 @@ function mapStateToProps(state, { id }) {
     deck: state[id]
   };
 }
+
+const styles = StyleSheet.create({
+  description: {
+    padding: 10,
+    borderRadius: 6,
+    borderWidth: 0.5,
+    borderColor: orange,
+    width: 300
+  }
+});
 
 export default connect(mapStateToProps)(LastStep);

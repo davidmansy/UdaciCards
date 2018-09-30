@@ -5,15 +5,15 @@ import { orange, darkBrown } from '../utils/colors';
 export default function UCardTextInput({
   text,
   onChangeText,
-  placeholder,
-  style
+  style,
+  ...props
 }) {
   return (
     <TextInput
       style={[styles.input, style]}
       value={text}
       onChangeText={onChangeText}
-      placeholder={placeholder}
+      {...props}
     />
   );
 }
@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     borderColor: orange,
     color: darkBrown,
     fontSize: 22,
-    height: 44,
+    minHeight: 44,
+    maxHeight: 132,
     padding: 4,
     textAlign: 'center',
     width: 300
