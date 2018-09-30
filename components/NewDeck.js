@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import UCardTextInput from './UCardTextInput';
-import { white } from '../utils/colors';
+import { white, darkBrown } from '../utils/colors';
 import { saveDeckTitle } from '../utils/api';
 import { addDeck } from '../actions';
 import { connect } from 'react-redux';
@@ -61,7 +61,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    fontSize: 50,
+    marginBottom: 20,
+    color: darkBrown,
+    fontSize: 44,
     textAlign: 'center'
   }
 });

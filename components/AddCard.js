@@ -58,6 +58,7 @@ class AddCard extends Component {
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View>
           <UCardTextInput
+            style={{ marginBottom: 10 }}
             text={question}
             onChangeText={question => {
               this.setState(() => ({ question }));
@@ -65,6 +66,7 @@ class AddCard extends Component {
             placeholder="Question"
           />
           <UCardTextInput
+            style={{ marginBottom: 10 }}
             text={answer}
             onChangeText={answer => {
               this.setState(() => ({ answer }));

@@ -46,7 +46,11 @@ const Tabs = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'New Deck',
         tabBarIcon: ({ tintColor }) => (
-          <FontAwesome name="plus-square" size={30} color={tintColor} />
+          <Ionicons
+            name={Platform.OS === 'ios' ? 'ios-add' : 'md-add'}
+            size={30}
+            color={tintColor}
+          />
         )
       }
     }

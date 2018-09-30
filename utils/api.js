@@ -59,3 +59,12 @@ export function updateDeckUser(title, user) {
     );
   });
 }
+
+export function deleteDeck(id) {
+  return AsyncStorage.getItem(DECK_STORAGE_KEY).then(results => {
+    const data = JSON.parse(results);
+    data[id] = undefined;
+    delete data[id];
+    AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data));
+  });
+}

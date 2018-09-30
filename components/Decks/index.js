@@ -46,6 +46,7 @@ class Decks extends Component {
 
     return (
       <View style={styles.container}>
+        {/* TODO: Sort list based on creation date */}
         <FlatList
           data={Object.values(decks)}
           keyExtractor={item => item.title}
@@ -61,7 +62,8 @@ class Decks extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: white
+    backgroundColor: white,
+    paddingTop: 10
   }
 });
 
