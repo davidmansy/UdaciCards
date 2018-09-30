@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList
-} from 'react-native';
-import { getDecks } from '../utils/api';
-import { purple } from '../utils/colors';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { getDecks } from '../../utils/api';
+import { white } from '../../utils/colors';
 import { AppLoading } from 'expo';
 import { connect } from 'react-redux';
-import { receiveDecks } from '../actions';
+import { receiveDecks } from '../../actions';
+import DeckItem from './DeckItem';
+import EmptyDeck from './EmptyDecks';
 
 class Decks extends Component {
   state = {
@@ -26,6 +22,14 @@ class Decks extends Component {
       .then(() => this.setState(() => ({ ready: true })));
   }
 
+  goToDeckDetail = item => {
+    this.props.navigation.navigate('DeckDetail', { id: item.title });
+  };
+
+  goToNewDeck = () => {
+    this.props.navigation.navigate('NewDeck');
+  };
+
   render() {
     const { ready } = this.state;
     const { decks } = this.props;
@@ -34,22 +38,19 @@ class Decks extends Component {
       return <AppLoading />;
     }
 
+    //Workaround for ListEmptyComponent prop of FlatList not centering the content
+    //Fix only available as-of rn 0.56
+    if (!Object.values(decks).length) {
+      return <EmptyDeck goToNewDeck={this.goToNewDeck} />;
+    }
+
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <FlatList
           data={Object.values(decks)}
           keyExtractor={item => item.title}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('DeckDetail', { id: item.title })
-              }
-            >
-              <View style={styles.deck}>
-                <Text>{item.title}</Text>
-                <Text># of cards: {item.questions.length}</Text>
-              </View>
-            </TouchableOpacity>
+            <DeckItem goToDeckDetail={this.goToDeckDetail} item={item} />
           )}
         />
       </View>
@@ -60,17 +61,7 @@ class Decks extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  deck: {
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    padding: 5,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: purple
+    backgroundColor: white
   }
 });
 

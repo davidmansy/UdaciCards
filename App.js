@@ -33,7 +33,11 @@ const Tabs = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'Decks',
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="ios-bookmarks" size={30} color={tintColor} />
+          <Ionicons
+            name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
+            size={30}
+            color={tintColor}
+          />
         )
       }
     },
@@ -55,7 +59,7 @@ const Tabs = createBottomTabNavigator(
       inactiveBackgroundColor: white,
       style: {
         height: 56,
-        shadowColor: 'rgba(0,0,0,0.24)',
+        shadowColor: 'rgba(241,153,106,0.8)',
         shadowOffset: {
           width: 0,
           height: 3

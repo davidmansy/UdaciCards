@@ -4,7 +4,7 @@
     "orientation": "portrait",
     "name": "UdaciCards",
     "description": "The best quiz builder ever",
-    "slug": "udaccards",
+    "slug": "udacicards",
     "version": "1.0",
     "icon": "https://tylermcginnis.com/udacifitness-512.png",
     "notification": {

@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import { updateDeckUser } from '../../utils/api';
 import { updateDeck } from '../../actions';
-import { NavigationActions } from 'react-navigation';
 import UCardBtn from '../UCardBtn';
 
 class LastStep extends Component {
